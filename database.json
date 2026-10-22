@@ -45,7 +45,6 @@
       "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800",
       "categoryId": "C01",
       "quantity": 50,
-      "rating": 4.8,
       "isAvailable": true,
       "isFeatured": true
     },
@@ -57,7 +56,6 @@
       "image": "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=800",
       "categoryId": "C01",
       "quantity": 40,
-      "rating": 4.6,
       "isAvailable": true,
       "isFeatured": false
     },
@@ -69,7 +67,6 @@
       "image": "https://images.unsplash.com/photo-1553979459-d2229ba7433a?w=800",
       "categoryId": "C01",
       "quantity": 25,
-      "rating": 4.7,
       "isAvailable": true,
       "isFeatured": true
     },
@@ -81,7 +78,6 @@
       "image": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=800",
       "categoryId": "C02",
       "quantity": 20,
-      "rating": 4.9,
       "isAvailable": true,
       "isFeatured": true
     },
@@ -93,7 +89,6 @@
       "image": "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=800",
       "categoryId": "C02",
       "quantity": 18,
-      "rating": 4.7,
       "isAvailable": true,
       "isFeatured": false
     },
@@ -105,7 +100,6 @@
       "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800",
       "categoryId": "C03",
       "quantity": 35,
-      "rating": 4.8,
       "isAvailable": true,
       "isFeatured": true
     },
@@ -117,7 +111,6 @@
       "image": "https://images.unsplash.com/photo-1562967914-608f82629710?w=800",
       "categoryId": "C03",
       "quantity": 20,
-      "rating": 4.7,
       "isAvailable": true,
       "isFeatured": false
     },
@@ -129,7 +122,6 @@
       "image": "https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=800",
       "categoryId": "C04",
       "quantity": 30,
-      "rating": 4.6,
       "isAvailable": true,
       "isFeatured": true
     },
@@ -141,7 +133,6 @@
       "image": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=800",
       "categoryId": "C05",
       "quantity": 60,
-      "rating": 4.5,
       "isAvailable": true,
       "isFeatured": false
     },
@@ -153,7 +144,6 @@
       "image": "https://images.unsplash.com/photo-1531749668029-2db88e4276c7?w=800",
       "categoryId": "C05",
       "quantity": 40,
-      "rating": 4.4,
       "isAvailable": true,
       "isFeatured": false
     },
@@ -165,7 +155,6 @@
       "image": "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=800",
       "categoryId": "C06",
       "quantity": 100,
-      "rating": 4.6,
       "isAvailable": true,
       "isFeatured": false
     },
@@ -177,7 +166,6 @@
       "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800",
       "categoryId": "C06",
       "quantity": 50,
-      "rating": 4.7,
       "isAvailable": true,
       "isFeatured": true
     },
@@ -189,12 +177,22 @@
       "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=800",
       "categoryId": "C07",
       "quantity": 30,
-      "rating": 4.5,
       "isAvailable": true,
       "isFeatured": false
     }
   ],
   "users": [
+    {
+      "id": "U000",
+      "name": "Admin Manager",
+      "email": "admin@fastfood.com",
+      "phone": "0988888888",
+      "password": "hashed_password",
+      "address": "FastFood Headquarter, Ha Noi",
+      "role": "ADMIN",
+      "points": 0,
+      "createdAt": "2026-10-01T00:00:00.000Z"
+    },
     {
       "id": "U001",
       "name": "Nguyen Van An",
@@ -205,6 +203,17 @@
       "role": "CUSTOMER",
       "points": 120,
       "createdAt": "2026-10-10T08:00:00.000Z"
+    },
+    {
+      "id": "U002",
+      "name": "Tran Thi Bich",
+      "email": "bich@example.com",
+      "phone": "0912345678",
+      "password": "hashed_password",
+      "address": "25 Cau Giay, Ha Noi",
+      "role": "CUSTOMER",
+      "points": 80,
+      "createdAt": "2026-10-12T09:30:00.000Z"
     }
   ],
   "coupons": [
@@ -216,6 +225,7 @@
       "discountValue": 10,
       "minOrderValue": 100000,
       "maxDiscount": 30000,
+      "expiryDate": "2026-12-31T23:59:59.000Z",
       "isActive": true
     },
     {
@@ -226,6 +236,7 @@
       "discountValue": 20000,
       "minOrderValue": 150000,
       "maxDiscount": null,
+      "expiryDate": "2026-12-31T23:59:59.000Z",
       "isActive": true
     }
   ],
@@ -256,10 +267,12 @@
       "subtotal": 147000,
       "deliveryFee": 15000,
       "discount": 0,
+      "couponCode": null,
       "total": 162000,
       "paymentMethod": "CASH",
       "paymentStatus": "UNPAID",
       "status": "DELIVERING",
+      "note": "Giao trước sảnh toà nhà giúp mình",
       "createdAt": "2026-10-18T11:30:00.000Z"
     },
     {
@@ -288,11 +301,148 @@
       "subtotal": 165000,
       "deliveryFee": 0,
       "discount": 20000,
+      "couponCode": "FASTFOOD20",
       "total": 145000,
       "paymentMethod": "BANK_TRANSFER",
       "paymentStatus": "PAID",
       "status": "DELIVERED",
+      "note": "Giao giờ hành chính",
       "createdAt": "2026-10-16T18:15:00.000Z"
+    },
+    {
+      "id": "ORD003",
+      "orderType": "ONLINE",
+      "customerType": "REGISTERED",
+      "userId": "U002",
+      "fulfillmentType": "DELIVERY",
+      "customerInfo": {
+        "name": "Tran Thi Bich",
+        "phone": "0912345678",
+        "address": "25 Cau Giay, Ha Noi"
+      },
+      "items": [
+        {
+          "foodId": "F001",
+          "quantity": 1,
+          "price": 59000
+        },
+        {
+          "foodId": "F006",
+          "quantity": 1,
+          "price": 55000
+        },
+        {
+          "foodId": "F012",
+          "quantity": 1,
+          "price": 25000
+        }
+      ],
+      "subtotal": 139000,
+      "deliveryFee": 15000,
+      "discount": 0,
+      "couponCode": null,
+      "total": 154000,
+      "paymentMethod": "MOMO",
+      "paymentStatus": "PAID",
+      "status": "DELIVERED",
+      "note": "Cho nhiều tương ớt và tương cà",
+      "createdAt": "2026-10-17T12:00:00.000Z"
+    },
+    {
+      "id": "ORD004",
+      "orderType": "ONLINE",
+      "customerType": "REGISTERED",
+      "userId": "U001",
+      "fulfillmentType": "DELIVERY",
+      "customerInfo": {
+        "name": "Nguyen Van An",
+        "phone": "0901234567",
+        "address": "12 Nguyen Trai, Ha Noi"
+      },
+      "items": [
+        {
+          "foodId": "F001",
+          "quantity": 1,
+          "price": 59000
+        },
+        {
+          "foodId": "F008",
+          "quantity": 1,
+          "price": 69000
+        }
+      ],
+      "subtotal": 128000,
+      "deliveryFee": 15000,
+      "discount": 0,
+      "couponCode": null,
+      "total": 143000,
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "status": "DELIVERED",
+      "note": null,
+      "createdAt": "2026-10-14T19:00:00.000Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "REV001",
+      "orderId": "ORD002",
+      "foodId": "F004",
+      "userId": "U001",
+      "userName": "Nguyen Van An",
+      "rating": 5,
+      "comment": "Pizza hải sản rất nhiều tôm mực, phô mai dẻo thơm, bánh nóng giòn!",
+      "createdAt": "2026-10-16T19:00:00.000Z"
+    },
+    {
+      "id": "REV002",
+      "orderId": "ORD002",
+      "foodId": "F011",
+      "userId": "U001",
+      "userName": "Nguyen Van An",
+      "rating": 4,
+      "comment": "Coca mát lạnh, giao hàng nhanh chóng.",
+      "createdAt": "2026-10-16T19:02:00.000Z"
+    },
+    {
+      "id": "REV003",
+      "orderId": "ORD003",
+      "foodId": "F001",
+      "userId": "U002",
+      "userName": "Tran Thi Bich",
+      "rating": 5,
+      "comment": "Burger bò nướng đậm vị, rau xà lách tươi xanh không bị nát, 5 sao!",
+      "createdAt": "2026-10-17T13:10:00.000Z"
+    },
+    {
+      "id": "REV004",
+      "orderId": "ORD003",
+      "foodId": "F006",
+      "userId": "U002",
+      "userName": "Tran Thi Bich",
+      "rating": 4,
+      "comment": "Gà rán vỏ giòn rụm, thịt bên trong mềm mọng không bị khô.",
+      "createdAt": "2026-10-17T13:15:00.000Z"
+    },
+    {
+      "id": "REV005",
+      "orderId": "ORD004",
+      "foodId": "F001",
+      "userId": "U001",
+      "userName": "Nguyen Van An",
+      "rating": 4,
+      "comment": "Thịt bò ướp vừa ăn, phô mai béo ngậy, lần sau sẽ ủng hộ tiếp.",
+      "createdAt": "2026-10-14T20:00:00.000Z"
+    },
+    {
+      "id": "REV006",
+      "orderId": "ORD004",
+      "foodId": "F008",
+      "userId": "U001",
+      "userName": "Nguyen Van An",
+      "rating": 5,
+      "comment": "Mì Ý sốt bò bằm đậm đà, sợi mì dai ngon chuẩn vị.",
+      "createdAt": "2026-10-14T20:05:00.000Z"
     }
   ],
   "shopInfo": {
