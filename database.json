@@ -1,0 +1,258 @@
+{
+  "categories": [
+    { "id": "C01", "name": "Burger", "description": "Các loại burger" },
+    { "id": "C02", "name": "Pizza", "description": "Các loại pizza" },
+    { "id": "C03", "name": "Gà rán", "description": "Gà rán và gà chiên" },
+    { "id": "C04", "name": "Mì Ý", "description": "Các loại mì Ý" },
+    { "id": "C05", "name": "Đồ ăn nhẹ", "description": "Khoai tây chiên và đồ ăn nhẹ" },
+    { "id": "C06", "name": "Đồ uống", "description": "Nước ngọt và trà" },
+    { "id": "C07", "name": "Tráng miệng", "description": "Kem và món tráng miệng" }
+  ],
+  "foods": [
+    {
+      "id": "F001",
+      "name": "Burger Bò Phô Mai",
+      "description": "Burger bò nướng với phô mai cheddar và rau tươi",
+      "price": 59000,
+      "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800",
+      "categoryId": "C01",
+      "quantity": 50,
+      "rating": 4.8,
+      "isAvailable": true,
+      "isFeatured": true
+    },
+    {
+      "id": "F002",
+      "name": "Burger Gà Giòn",
+      "description": "Burger gà chiên giòn với sốt mayonnaise",
+      "price": 49000,
+      "image": "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=800",
+      "categoryId": "C01",
+      "quantity": 40,
+      "rating": 4.6,
+      "isAvailable": true,
+      "isFeatured": false
+    },
+    {
+      "id": "F003",
+      "name": "Burger Bò Hai Tầng",
+      "description": "Burger hai lớp bò nướng cùng phô mai và sốt BBQ",
+      "price": 89000,
+      "image": "https://images.unsplash.com/photo-1553979459-d2229ba7433a?w=800",
+      "categoryId": "C01",
+      "quantity": 25,
+      "rating": 4.7,
+      "isAvailable": true,
+      "isFeatured": true
+    },
+    {
+      "id": "F004",
+      "name": "Pizza Hải Sản",
+      "description": "Pizza tôm, mực, phô mai mozzarella",
+      "price": 129000,
+      "image": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=800",
+      "categoryId": "C02",
+      "quantity": 20,
+      "rating": 4.9,
+      "isAvailable": true,
+      "isFeatured": true
+    },
+    {
+      "id": "F005",
+      "name": "Pizza Pepperoni",
+      "description": "Pizza pepperoni với phô mai và sốt cà chua",
+      "price": 109000,
+      "image": "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=800",
+      "categoryId": "C02",
+      "quantity": 18,
+      "rating": 4.7,
+      "isAvailable": true,
+      "isFeatured": false
+    },
+    {
+      "id": "F006",
+      "name": "Gà Rán 2 Miếng",
+      "description": "Hai miếng gà rán giòn với gia vị đặc biệt",
+      "price": 55000,
+      "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800",
+      "categoryId": "C03",
+      "quantity": 35,
+      "rating": 4.8,
+      "isAvailable": true,
+      "isFeatured": true
+    },
+    {
+      "id": "F007",
+      "name": "Gà Rán 4 Miếng",
+      "description": "Bốn miếng gà rán dành cho nhóm bạn",
+      "price": 99000,
+      "image": "https://images.unsplash.com/photo-1562967914-608f82629710?w=800",
+      "categoryId": "C03",
+      "quantity": 20,
+      "rating": 4.7,
+      "isAvailable": true,
+      "isFeatured": false
+    },
+    {
+      "id": "F008",
+      "name": "Mì Ý Sốt Bò Bằm",
+      "description": "Mì Ý sốt cà chua bò bằm và phô mai",
+      "price": 69000,
+      "image": "https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=800",
+      "categoryId": "C04",
+      "quantity": 30,
+      "rating": 4.6,
+      "isAvailable": true,
+      "isFeatured": true
+    },
+    {
+      "id": "F009",
+      "name": "Khoai Tây Chiên",
+      "description": "Khoai tây chiên vàng giòn",
+      "price": 29000,
+      "image": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=800",
+      "categoryId": "C05",
+      "quantity": 60,
+      "rating": 4.5,
+      "isAvailable": true,
+      "isFeatured": false
+    },
+    {
+      "id": "F010",
+      "name": "Phô Mai Que",
+      "description": "Phô mai que chiên giòn, gồm 5 chiếc",
+      "price": 39000,
+      "image": "https://images.unsplash.com/photo-1531749668029-2db88e4276c7?w=800",
+      "categoryId": "C05",
+      "quantity": 40,
+      "rating": 4.4,
+      "isAvailable": true,
+      "isFeatured": false
+    },
+    {
+      "id": "F011",
+      "name": "Coca-Cola",
+      "description": "Nước ngọt có ga",
+      "price": 18000,
+      "image": "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=800",
+      "categoryId": "C06",
+      "quantity": 100,
+      "rating": 4.6,
+      "isAvailable": true,
+      "isFeatured": false
+    },
+    {
+      "id": "F012",
+      "name": "Trà Đào",
+      "description": "Trà đào thanh mát với đào ngâm",
+      "price": 25000,
+      "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800",
+      "categoryId": "C06",
+      "quantity": 50,
+      "rating": 4.7,
+      "isAvailable": true,
+      "isFeatured": true
+    },
+    {
+      "id": "F013",
+      "name": "Kem Vani",
+      "description": "Kem vani mềm mịn, vị ngọt dịu",
+      "price": 22000,
+      "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=800",
+      "categoryId": "C07",
+      "quantity": 30,
+      "rating": 4.5,
+      "isAvailable": true,
+      "isFeatured": false
+    }
+  ],
+  "coupons": [
+    {
+      "id": "CP01",
+      "code": "WELCOME10",
+      "description": "Giảm 10% cho đơn hàng từ 100.000đ",
+      "discountType": "percent",
+      "discountValue": 10,
+      "minOrderValue": 100000,
+      "maxDiscount": 30000,
+      "isActive": true
+    },
+    {
+      "id": "CP02",
+      "code": "FASTFOOD20",
+      "description": "Giảm 20.000đ cho đơn hàng từ 150.000đ",
+      "discountType": "fixed",
+      "discountValue": 20000,
+      "minOrderValue": 150000,
+      "maxDiscount": null,
+      "isActive": true
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD001",
+      "orderType": "IN_STORE",
+      "fulfillmentType": "TAKEAWAY",
+      "customerInfo": null,
+      "items": [
+        {
+          "foodId": "F001",
+          "quantity": 2,
+          "price": 59000
+        },
+        {
+          "foodId": "F009",
+          "quantity": 1,
+          "price": 29000
+        }
+      ],
+      "subtotal": 147000,
+      "deliveryFee": 0,
+      "discount": 0,
+      "total": 147000,
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "status": "COMPLETED",
+      "createdAt": "2026-10-18T11:30:00.000Z"
+    },
+    {
+      "id": "ORD002",
+      "orderType": "ONLINE",
+      "fulfillmentType": "DELIVERY",
+      "customerInfo": {
+        "name": "Tran Thi Bich",
+        "phone": "0912345678",
+        "address": "25 Cau Giay, Ha Noi"
+      },
+      "items": [
+        {
+          "foodId": "F004",
+          "quantity": 1,
+          "price": 129000
+        },
+        {
+          "foodId": "F011",
+          "quantity": 2,
+          "price": 18000
+        }
+      ],
+      "subtotal": 165000,
+      "deliveryFee": 0,
+      "discount": 20000,
+      "total": 145000,
+      "paymentMethod": "BANK_TRANSFER",
+      "paymentStatus": "PAID",
+      "status": "DELIVERED",
+      "createdAt": "2026-10-16T18:15:00.000Z"
+    }
+  ],
+  "shopInfo": {
+    "name": "FastFood",
+    "deliveryFee": 15000,
+    "freeDeliveryThreshold": 150000,
+    "estimatedDeliveryMinutes": {
+      "min": 25,
+      "max": 45
+    }
+  }
+}
