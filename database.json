@@ -1,12 +1,40 @@
 {
   "categories": [
-    { "id": "C01", "name": "Burger", "description": "Các loại burger" },
-    { "id": "C02", "name": "Pizza", "description": "Các loại pizza" },
-    { "id": "C03", "name": "Gà rán", "description": "Gà rán và gà chiên" },
-    { "id": "C04", "name": "Mì Ý", "description": "Các loại mì Ý" },
-    { "id": "C05", "name": "Đồ ăn nhẹ", "description": "Khoai tây chiên và đồ ăn nhẹ" },
-    { "id": "C06", "name": "Đồ uống", "description": "Nước ngọt và trà" },
-    { "id": "C07", "name": "Tráng miệng", "description": "Kem và món tráng miệng" }
+    {
+      "id": "C01",
+      "name": "Burger",
+      "description": "Các loại burger"
+    },
+    {
+      "id": "C02",
+      "name": "Pizza",
+      "description": "Các loại pizza"
+    },
+    {
+      "id": "C03",
+      "name": "Gà rán",
+      "description": "Gà rán và gà chiên"
+    },
+    {
+      "id": "C04",
+      "name": "Mì Ý",
+      "description": "Các loại mì Ý"
+    },
+    {
+      "id": "C05",
+      "name": "Đồ ăn nhẹ",
+      "description": "Khoai tây chiên và đồ ăn nhẹ"
+    },
+    {
+      "id": "C06",
+      "name": "Đồ uống",
+      "description": "Nước ngọt và trà"
+    },
+    {
+      "id": "C07",
+      "name": "Tráng miệng",
+      "description": "Kem và món tráng miệng"
+    }
   ],
   "foods": [
     {
@@ -166,6 +194,19 @@
       "isFeatured": false
     }
   ],
+  "users": [
+    {
+      "id": "U001",
+      "name": "Nguyen Van An",
+      "email": "an@example.com",
+      "phone": "0901234567",
+      "password": "hashed_password",
+      "address": "12 Nguyen Trai, Ha Noi",
+      "role": "CUSTOMER",
+      "points": 120,
+      "createdAt": "2026-10-10T08:00:00.000Z"
+    }
+  ],
   "coupons": [
     {
       "id": "CP01",
@@ -191,9 +232,15 @@
   "orders": [
     {
       "id": "ORD001",
-      "orderType": "IN_STORE",
-      "fulfillmentType": "TAKEAWAY",
-      "customerInfo": null,
+      "orderType": "ONLINE",
+      "customerType": "GUEST",
+      "userId": null,
+      "fulfillmentType": "DELIVERY",
+      "customerInfo": {
+        "name": "Nguyen Van B",
+        "phone": "0901111222",
+        "address": "12 Nguyen Trai, Ha Noi"
+      },
       "items": [
         {
           "foodId": "F001",
@@ -207,22 +254,24 @@
         }
       ],
       "subtotal": 147000,
-      "deliveryFee": 0,
+      "deliveryFee": 15000,
       "discount": 0,
-      "total": 147000,
+      "total": 162000,
       "paymentMethod": "CASH",
-      "paymentStatus": "PAID",
-      "status": "COMPLETED",
+      "paymentStatus": "UNPAID",
+      "status": "DELIVERING",
       "createdAt": "2026-10-18T11:30:00.000Z"
     },
     {
       "id": "ORD002",
       "orderType": "ONLINE",
+      "customerType": "REGISTERED",
+      "userId": "U001",
       "fulfillmentType": "DELIVERY",
       "customerInfo": {
-        "name": "Tran Thi Bich",
-        "phone": "0912345678",
-        "address": "25 Cau Giay, Ha Noi"
+        "name": "Nguyen Van An",
+        "phone": "0901234567",
+        "address": "12 Nguyen Trai, Ha Noi"
       },
       "items": [
         {
