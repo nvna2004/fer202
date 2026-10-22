@@ -5,3 +5,5 @@ const API = axios.create({
 });
 //export const getBooks = () =>API.get("/books");
 
+export const getFoods = () => API.get("/foods");
+export const getCategories = () => API.get("/categories")
