@@ -29,6 +29,7 @@ export const CartProvider = ({ children }) => {
                 const updated = [...prev];
                 const currentQty = updated[existingIndex].quantity;
                 const newQty = currentQty + quantity;
+                // Giới hạn không vượt quá kho nếu có food.quantity
                 if (food.quantity && newQty > food.quantity) {
                     alert(`Số lượng trong kho chỉ còn ${food.quantity} phần!`);
                     updated[existingIndex].quantity = food.quantity;
