@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { getFoods, getCategories } from "../config/api";
 import { Badge, Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
+import { useCart } from "../context/CartContext";
 
 function Home() {
   const [foods, setFoods] = useState([]);
   const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [sortOption, setSortOption] = useState("");
-    const [cart, setCart] = useState({});
     const [selectedFood, setSelectedFood] = useState(null);
     const [showCart, setShowCart] = useState(false);
+    const { cartItems, addToCart, updateQuantity, totalItems, subtotal } = useCart();
 
   const loadData = async () => {
         const resFoods = await getFoods();
@@ -40,28 +41,6 @@ function Home() {
             return sortOption === "low-to-high" ? firstPrice - secondPrice : secondPrice - firstPrice;
         });
 
-    const cartItems = foods.filter((food) => cart[food.id] > 0);
-    const cartCount = Object.values(cart).reduce((total, quantity) => total + quantity, 0);
-    const cartTotal = cartItems.reduce((total, food) => total + Number(food.price) * cart[food.id], 0);
-
-    const addToCart = (food) => {
-        setCart((currentCart) => ({
-            ...currentCart,
-            [food.id]: (currentCart[food.id] ?? 0) + 1,
-        }));
-    };
-
-    const changeCartQuantity = (foodId, amount) => {
-        setCart((currentCart) => {
-            const nextQuantity = (currentCart[foodId] ?? 0) + amount;
-            if (nextQuantity <= 0) {
-                const { [foodId]: removedFood, ...remainingCart } = currentCart;
-                return remainingCart;
-            }
-            return { ...currentCart, [foodId]: nextQuantity };
-        });
-    };
-
   return (
             <div className="d-flex flex-column min-vh-100">
                 <header className="d-flex flex-wrap align-items-center justify-content-between gap-3 bg-dark text-white px-3 px-md-4 py-3 rounded-bottom">
@@ -71,8 +50,8 @@ function Home() {
                     <nav className="d-flex align-items-center gap-3" aria-label="Điều hướng chính">
                         <a href="#menu" className="text-decoration-none text-white">Thực đơn</a>
                         <a href="#contact" className="text-decoration-none text-white">Liên hệ</a>
-                        <Button variant="outline-light" onClick={() => setShowCart(true)} aria-label={`Giỏ hàng, ${cartCount} sản phẩm`}>
-                            Giỏ hàng <Badge bg="warning" text="dark">{cartCount}</Badge>
+                        <Button variant="outline-light" onClick={() => setShowCart(true)} aria-label={`Giỏ hàng, ${totalItems} sản phẩm`}>
+                            Giỏ hàng <Badge bg="warning" text="dark">{totalItems}</Badge>
                         </Button>
                     </nav>
                 </header>
@@ -174,7 +153,7 @@ function Home() {
 
             <Modal show={showCart} onHide={() => setShowCart(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Giỏ hàng ({cartCount})</Modal.Title>
+                    <Modal.Title>Giỏ hàng ({totalItems})</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {cartItems.length === 0 ? (
@@ -188,15 +167,15 @@ function Home() {
                                         <div className="small text-muted">{Number(food.price).toLocaleString("vi-VN")} đ / món</div>
                                     </div>
                                     <div className="d-flex align-items-center gap-2">
-                                        <Button size="sm" variant="outline-secondary" onClick={() => changeCartQuantity(food.id, -1)} aria-label={`Giảm số lượng ${food.name}`}>-</Button>
-                                        <span>{cart[food.id]}</span>
-                                        <Button size="sm" variant="outline-secondary" onClick={() => changeCartQuantity(food.id, 1)} aria-label={`Tăng số lượng ${food.name}`}>+</Button>
+                                        <Button size="sm" variant="outline-secondary" onClick={() => updateQuantity(food.id, food.quantity - 1)} aria-label={`Giảm số lượng ${food.name}`}>-</Button>
+                                        <span>{food.quantity}</span>
+                                        <Button size="sm" variant="outline-secondary" onClick={() => updateQuantity(food.id, food.quantity + 1)} aria-label={`Tăng số lượng ${food.name}`}>+</Button>
                                     </div>
                                 </div>
                             ))}
                             <div className="d-flex justify-content-between fw-bold mt-3">
                                 <span>Tổng cộng</span>
-                                <span>{cartTotal.toLocaleString("vi-VN")} đ</span>
+                                <span>{subtotal.toLocaleString("vi-VN")} đ</span>
                             </div>
                         </>
                     )}
