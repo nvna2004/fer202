@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Table, Button, Form, Alert, InputGroup, Badge } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { getAllCoupons, createOrder } from '../config/api';
 
 function Cart() {
   const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal } = useCart();
+  const { user, updateUserPoints } = useAuth();
   const navigate = useNavigate();
 
   // Coupon state
@@ -21,6 +23,15 @@ function Cart() {
   const [customerNote, setCustomerNote] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('CASH');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Tự động điền thông tin nếu user đã đăng nhập
+  useEffect(() => {
+    if (user) {
+      setCustomerName(user.name || '');
+      setCustomerPhone(user.phone || '');
+      setCustomerAddress(user.address || '');
+    }
+  }, [user]);
 
   // Delivery fee rules
   const deliveryFee = subtotal >= 150000 || subtotal === 0 ? 0 : 15000;
@@ -100,8 +111,8 @@ function Cart() {
     const orderData = {
       id: orderId,
       orderType: 'ONLINE',
-      customerType: 'GUEST',
-      userId: null,
+      customerType: user ? 'REGISTERED' : 'GUEST',
+      userId: user ? user.id : null,
       fulfillmentType: 'DELIVERY',
       customerInfo: {
         name: customerName.trim(),
@@ -130,7 +141,16 @@ function Cart() {
     try {
       setIsSubmitting(true);
       await createOrder(orderData);
-      alert(`🎉 Đặt hàng thành công! Mã đơn hàng của bạn là: ${orderId}`);
+      
+      // Tích lũy điểm thưởng nếu đã đăng nhập (1 điểm mỗi 10.000đ)
+      if (user) {
+        const earnedPoints = Math.floor(finalTotal / 10000);
+        if (earnedPoints > 0) {
+          await updateUserPoints(earnedPoints);
+        }
+      }
+
+      alert(`🎉 Đặt hàng thành công! Mã đơn hàng: ${orderId}${user ? ` (Bạn nhận được +${Math.floor(finalTotal / 10000)} điểm thưởng)` : ''}`);
       clearCart();
       navigate('/orders');
     } catch (err) {
@@ -250,8 +270,13 @@ function Cart() {
 
           {/* Form thông tin giao hàng */}
           <Card className="shadow-sm border-0 mb-4">
-            <Card.Header className="bg-white fw-bold py-3">
-              📍 Thông tin giao hàng & người nhận
+            <Card.Header className="bg-white fw-bold py-3 d-flex justify-content-between align-items-center">
+              <span>📍 Thông tin giao hàng & người nhận</span>
+              {!user && (
+                <small className="text-muted">
+                  Đã có tài khoản? <Link to="/login" className="text-primary fw-bold">Đăng nhập ngay</Link>
+                </small>
+              )}
             </Card.Header>
             <Card.Body>
               <Form onSubmit={handleCheckout}>
@@ -432,4 +457,3 @@ function Cart() {
 }
 
 export default Cart;
-

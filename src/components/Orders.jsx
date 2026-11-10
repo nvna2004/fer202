@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Badge, Button, Form, Spinner, Alert, Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { getAllOrders, updateOrder } from '../config/api';
+import { useAuth } from '../context/AuthContext';
 
 function Orders() {
+  const { user, isAdmin } = useAuth();
+
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
@@ -56,19 +60,50 @@ function Orders() {
     }
   };
 
-  const filteredOrders = orders.filter((order) => {
-    if (statusFilter !== 'ALL' && order.status !== statusFilter) {
-      return false;
+  // Hàm kiểm tra xem đơn có phải của chính người đang đăng nhập hay không
+  const isMyOrder = (order) => {
+    if (!user) return false;
+    return order.userId === user.id || (user.phone && order.customerInfo?.phone === user.phone);
+  };
+
+  const cleanTerm = searchTerm.trim().toUpperCase();
+  // Kiểm tra người dùng có đang gõ mã đơn hàng (bắt đầu bằng ORD) hay không
+  const isSearchingByOrderCode = cleanTerm.startsWith('ORD');
+
+  let displayedOrders = [];
+
+  if (isSearchingByOrderCode) {
+    // KHI SEARCH CÓ MÃ ORD: Cho phép tìm ra đơn hàng (kể cả của người khác) theo mã đơn
+    displayedOrders = orders.filter((order) =>
+      order.id?.toUpperCase().includes(cleanTerm)
+    );
+  } else {
+    // MẶC ĐỊNH (HOẶC SEARCH THÔNG THƯỜNG): CHỈ HIỂN THỊ ĐƠN HÀNG CỦA BẢN THÂN
+    if (user) {
+      displayedOrders = orders.filter(isMyOrder);
+
+      // Nếu có tìm kiếm từ khóa thông thường (tên món, SĐT bản thân, ghi chú...)
+      if (searchTerm.trim() !== '') {
+        const term = searchTerm.toLowerCase();
+        displayedOrders = displayedOrders.filter((order) => {
+          const matchId = order.id?.toLowerCase().includes(term);
+          const matchName = order.customerInfo?.name?.toLowerCase().includes(term);
+          const matchItem = order.items?.some(item =>
+            (item.foodName || item.foodId)?.toLowerCase().includes(term)
+          );
+          return matchId || matchName || matchItem;
+        });
+      }
+    } else {
+      // Chưa đăng nhập và chưa gõ mã ORD -> Không hiển thị
+      displayedOrders = [];
     }
-    if (searchTerm.trim() !== '') {
-      const term = searchTerm.toLowerCase();
-      const matchId = order.id?.toLowerCase().includes(term);
-      const matchName = order.customerInfo?.name?.toLowerCase().includes(term);
-      const matchPhone = order.customerInfo?.phone?.includes(term);
-      if (!matchId && !matchName && !matchPhone) return false;
-    }
-    return true;
-  });
+  }
+
+  // Lọc thêm theo trạng thái (status)
+  if (statusFilter !== 'ALL') {
+    displayedOrders = displayedOrders.filter((order) => order.status === statusFilter);
+  }
 
   if (loading) {
     return (
@@ -81,25 +116,43 @@ function Orders() {
 
   return (
     <div>
-      <h3 className="fw-bold mb-4 border-start border-4 border-warning ps-2">
-        📦 Tra Cứu & Lịch Sử Đơn Hàng
-      </h3>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h3 className="fw-bold mb-0 border-start border-4 border-warning ps-2">
+          {user ? '📦 Đơn Hàng Của Tôi' : '🔍 Tra Cứu Đơn Hàng'}
+        </h3>
+        {isAdmin && (
+          <Link to="/admin/orders" className="btn btn-dark btn-sm fw-bold">
+            ⚙️ Chuyển sang Quản Lý Toàn Bộ Đơn Hàng Cửa Hàng
+          </Link>
+        )}
+      </div>
 
       {error && <Alert variant="danger">{error}</Alert>}
 
+      {/* Thanh tìm kiếm và bộ lọc */}
       <Card className="shadow-sm border-0 bg-light mb-4">
         <Card.Body>
           <Row className="g-3">
-            <Col md={7}>
-              <Form.Label className="small fw-bold">Tìm kiếm đơn hàng</Form.Label>
+            <Col md={8}>
+              <Form.Label className="small fw-bold">
+                Tìm kiếm đơn hàng
+              </Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Nhập mã đơn hàng (ORD...), tên hoặc số điện thoại..."
+                placeholder="Nhập mã đơn (bắt đầu bằng ORD...) để tra cứu đơn bất kỳ, hoặc tìm món ăn trong đơn của bạn..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
+              <Form.Text className="text-muted small">
+                {isSearchingByOrderCode
+                  ? '🔎 Đang tra cứu đơn hàng theo mã ORD trên toàn hệ thống.'
+                  : user
+                  ? '🔒 Mặc định chỉ hiển thị đơn hàng của bạn. Nhập mã có "ORD" để tìm đơn của người khác.'
+                  : '💡 Vui lòng nhập mã đơn (ví dụ: ORD001) để xem chi tiết.'}
+              </Form.Text>
             </Col>
-            <Col md={5}>
+
+            <Col md={4}>
               <Form.Label className="small fw-bold">Lọc theo trạng thái</Form.Label>
               <Form.Select
                 value={statusFilter}
@@ -116,13 +169,28 @@ function Orders() {
         </Card.Body>
       </Card>
 
-      {filteredOrders.length === 0 ? (
+      {/* Hiển thị danh sách đơn hàng */}
+      {!user && !isSearchingByOrderCode ? (
+        <Alert variant="warning" className="text-center py-5">
+          <h5>🔍 Bạn chưa đăng nhập</h5>
+          <p className="text-muted mb-3">
+            Vui lòng nhập <strong>Mã đơn hàng</strong> (bắt đầu bằng <code>ORD...</code>, ví dụ: <code>ORD001</code>) để tra cứu đơn hàng của bạn.
+          </p>
+          <div className="d-flex justify-content-center gap-2">
+            <Link to="/login" className="btn btn-outline-dark btn-sm">
+              Đăng nhập tài khoản
+            </Link>
+          </div>
+        </Alert>
+      ) : displayedOrders.length === 0 ? (
         <Alert variant="info" className="text-center py-4">
-          Không tìm thấy đơn hàng nào phù hợp với điều kiện tìm kiếm.
+          {isSearchingByOrderCode
+            ? `Không tìm thấy đơn hàng nào có mã "${searchTerm.trim()}".`
+            : 'Bạn chưa có đơn hàng nào.'}
         </Alert>
       ) : (
         <div className="d-flex flex-column gap-4">
-          {filteredOrders.map((order) => (
+          {displayedOrders.map((order) => (
             <Card key={order.id} className="shadow-sm border-0">
               <Card.Header className="bg-white d-flex flex-wrap justify-content-between align-items-center py-3">
                 <div>
@@ -215,4 +283,3 @@ function Orders() {
 }
 
 export default Orders;
-
