@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getFoods, getCategories } from "../config/api";
-import { Badge, Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
+import { Badge, Button, Card, Col, Form, ListGroup, Modal, Row } from "react-bootstrap";
 import { useCart } from "../context/CartContext";
 
 function Home() {
@@ -8,6 +8,7 @@ function Home() {
   const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [sortOption, setSortOption] = useState("");
+    const [selectedCategoryId, setSelectedCategoryId] = useState("all");
     const [selectedFood, setSelectedFood] = useState(null);
     const [showCart, setShowCart] = useState(false);
     const { cartItems, addToCart, updateQuantity, totalItems, subtotal } = useCart();
@@ -24,6 +25,7 @@ function Home() {
     }, []);
 
     const visibleFoods = foods
+        .filter((food) => selectedCategoryId === "all" || food.categoryId === selectedCategoryId)
         .filter((food) => (food.name ?? "").toLowerCase().includes(searchTerm.trim().toLowerCase()))
         .sort((firstFood, secondFood) => {
             if (sortOption === "") return 0;
@@ -64,30 +66,61 @@ function Home() {
                 </div>
             </div>
 
-                <div id="menu" className="d-flex flex-column flex-md-row gap-2 mb-4">
-                <Form.Control
-                    type="search"
-                    placeholder="Tìm món ăn"
-                    aria-label="Tìm món ăn"
-                    value={searchTerm}
-                    onChange={(event) => setSearchTerm(event.target.value)}
-                />
-                <Form.Select
-                    aria-label="Sắp xếp sản phẩm"
-                    value={sortOption}
-                    onChange={(event) => setSortOption(event.target.value)}
-                >
-                    <option value="">Thứ tự mặc định</option>
-                    <option value="low-to-high">Giá: thấp đến cao</option>
-                    <option value="high-to-low">Giá: cao đến thấp</option>
-                    <option value="category-a-z">Danh mục: A đến Z</option>
-                    <option value="category-z-a">Danh mục: Z đến A</option>
-                </Form.Select>
-            </div>
+                <Row id="menu" className="g-4 mb-5">
+                    <Col xs={12} lg={3}>
+                        <aside aria-label="Lọc theo danh mục">
+                            <h2 className="h5 mb-3">Danh mục món ăn</h2>
+                            <ListGroup>
+                                <ListGroup.Item
+                                    action
+                                    active={selectedCategoryId === "all"}
+                                    onClick={() => setSelectedCategoryId("all")}
+                                >
+                                    <span>Tất cả món</span>
+                                    <span className="float-end">{foods.length}</span>
+                                </ListGroup.Item>
+                                {categories.map((category) => (
+                                    <ListGroup.Item
+                                        key={category.id}
+                                        action
+                                        active={selectedCategoryId === category.id}
+                                        onClick={() => setSelectedCategoryId(category.id)}
+                                    >
+                                        <span>{category.name}</span>
+                                        <span className="float-end">
+                                            {foods.filter((food) => food.categoryId === category.id).length}
+                                        </span>
+                                    </ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                        </aside>
+                    </Col>
 
-            <Row className="g-4 mb-5">
+                    <Col xs={12} lg={9}>
+                        <div className="d-flex flex-column flex-md-row gap-2 mb-4">
+                            <Form.Control
+                                type="search"
+                                placeholder="Tìm món ăn"
+                                aria-label="Tìm món ăn"
+                                value={searchTerm}
+                                onChange={(event) => setSearchTerm(event.target.value)}
+                            />
+                            <Form.Select
+                                aria-label="Sắp xếp sản phẩm"
+                                value={sortOption}
+                                onChange={(event) => setSortOption(event.target.value)}
+                            >
+                                <option value="">Thứ tự mặc định</option>
+                                <option value="low-to-high">Giá: thấp đến cao</option>
+                                <option value="high-to-low">Giá: cao đến thấp</option>
+                                <option value="category-a-z">Danh mục: A đến Z</option>
+                                <option value="category-z-a">Danh mục: Z đến A</option>
+                            </Form.Select>
+                        </div>
+
+                        <Row className="g-4">
                 {visibleFoods.map((food) => (
-                    <Col key={food.id} xs={12} sm={6} lg={4} xl={3}>
+                    <Col key={food.id} xs={12} sm={6} xl={4}>
                         <Card className="h-100 shadow-sm">
                             {food.image ? (
                                 <Card.Img
@@ -125,7 +158,9 @@ function Home() {
                 {visibleFoods.length === 0 && (
                     <Col><p className="text-center text-muted py-5">Không tìm thấy sản phẩm phù hợp.</p></Col>
                 )}
-            </Row>
+                        </Row>
+                    </Col>
+                </Row>
 
             <Modal show={Boolean(selectedFood)} onHide={() => setSelectedFood(null)} centered>
                 {selectedFood && (
