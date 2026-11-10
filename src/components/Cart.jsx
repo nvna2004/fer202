@@ -7,16 +7,14 @@ import { getAllCoupons, createOrder } from '../config/api';
 
 function Cart() {
   const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal } = useCart();
-  const { user, updateUserPoints } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Coupon state
   const [couponInput, setCouponInput] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponError, setCouponError] = useState('');
   const [couponSuccess, setCouponSuccess] = useState('');
 
-  // Checkout form state
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [customerAddress, setCustomerAddress] = useState('');
@@ -24,7 +22,6 @@ function Cart() {
   const [paymentMethod, setPaymentMethod] = useState('CASH');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Tự động điền thông tin nếu user đã đăng nhập
   useEffect(() => {
     if (user) {
       setCustomerName(user.name || '');
@@ -33,10 +30,9 @@ function Cart() {
     }
   }, [user]);
 
-  // Delivery fee rules
   const deliveryFee = subtotal >= 150000 || subtotal === 0 ? 0 : 15000;
 
-  // Calculate discount
+  // Calculate discount from coupon
   let discount = 0;
   if (appliedCoupon) {
     if (appliedCoupon.discountType === 'percent') {
@@ -141,16 +137,8 @@ function Cart() {
     try {
       setIsSubmitting(true);
       await createOrder(orderData);
-      
-      // Tích lũy điểm thưởng nếu đã đăng nhập (1 điểm mỗi 10.000đ)
-      if (user) {
-        const earnedPoints = Math.floor(finalTotal / 10000);
-        if (earnedPoints > 0) {
-          await updateUserPoints(earnedPoints);
-        }
-      }
 
-      alert(`🎉 Đặt hàng thành công! Mã đơn hàng: ${orderId}${user ? ` (Bạn nhận được +${Math.floor(finalTotal / 10000)} điểm thưởng)` : ''}`);
+      alert(`🎉 Đặt hàng thành công! Mã đơn: ${orderId}`);
       clearCart();
       navigate('/orders');
     } catch (err) {
@@ -425,7 +413,7 @@ function Cart() {
 
               {discount > 0 && (
                 <div className="d-flex justify-content-between mb-2 text-success">
-                  <span>Giảm giá ({appliedCoupon?.code}):</span>
+                  <span>Giảm giá mã ({appliedCoupon?.code}):</span>
                   <span className="fw-bold">-{discount.toLocaleString('vi-VN')}đ</span>
                 </div>
               )}

@@ -74,10 +74,8 @@ function Header() {
                 title={
                   <span>
                     👤 <strong>{user.name}</strong>
-                    {isAdmin ? (
+                    {isAdmin && (
                       <Badge bg="danger" className="ms-2">Admin</Badge>
-                    ) : (
-                      <Badge bg="info" className="ms-2">{user.points || 0} điểm</Badge>
                     )}
                   </span>
                 } 
@@ -87,11 +85,6 @@ function Header() {
                 <NavDropdown.ItemText className="small text-muted">
                   ✉️ {user.email}
                 </NavDropdown.ItemText>
-                {!isAdmin && (
-                  <NavDropdown.ItemText className="small text-success">
-                    ⭐ Điểm tích lũy: <strong>{user.points || 0} xu</strong>
-                  </NavDropdown.ItemText>
-                )}
                 <NavDropdown.Divider />
                 
                 {/* Phân biệt rõ menu cho Admin và Khách hàng */}

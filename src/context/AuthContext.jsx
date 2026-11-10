@@ -42,7 +42,6 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-            // Kiểm tra email trùng
             const checkRes = await axios.get(`http://localhost:9999/users?email=${userData.email.trim()}`);
             if (checkRes.data.length > 0) {
                 return { success: false, message: 'Email này đã được sử dụng!' };
@@ -56,7 +55,6 @@ export const AuthProvider = ({ children }) => {
                 password: userData.password,
                 address: userData.address.trim(),
                 role: 'CUSTOMER',
-                points: 0,
                 createdAt: new Date().toISOString()
             };
 
@@ -72,28 +70,15 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
-    const updateUserPoints = async (pointsToAdd) => {
-        if (!user) return;
-        try {
-            const newPoints = (user.points || 0) + pointsToAdd;
-            const res = await axios.patch(`http://localhost:9999/users/${user.id}`, { points: newPoints });
-            setUser(res.data);
-        } catch (e) {
-            console.error('Không thể cập nhật điểm tích lũy', e);
-        }
-    };
-
     return (
         <AuthContext.Provider value={{
             user,
             login,
             register,
             logout,
-            updateUserPoints,
             isAdmin: user?.role === 'ADMIN'
         }}>
             {children}
         </AuthContext.Provider>
     );
 };
-

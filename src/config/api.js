@@ -6,6 +6,7 @@ const API = axios.create({
 
 // Category APIs
 export const getAllCategories = () => API.get("/categories");
+export const getCategories = () => API.get("/categories");
 export const getCategoryById = (id) => API.get(`/categories/${id}`);
 export const addCategory = (data) => API.post("/categories", data);
 export const updateCategory = (id, data) => API.put(`/categories/${id}`, data);
@@ -13,6 +14,7 @@ export const deleteCategory = (id) => API.delete(`/categories/${id}`);
 
 // Food APIs
 export const getAllFoods = () => API.get("/foods");
+export const getFoods = () => API.get("/foods");
 export const getFoodById = (id) => API.get(`/foods/${id}`);
 export const getFoodsByCategoryId = (categoryId) => API.get(`/foods?categoryId=${categoryId}`);
 export const addFood = (data) => API.post("/foods", data);
